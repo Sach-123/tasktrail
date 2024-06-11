@@ -12,7 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.use(cookieParser())
 import userRouter from "./routes/user.routes.js";
-
+app.get('/', (req, res) => {
+  res.json({message: "working"})
+})
 app.use("/api/v1/users", userRouter);
 
 export { app };
