@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from 'axios'
-import {useNavigate, NavLink} from 'react-router-dom'
+import axios from "axios";
+import { useNavigate, NavLink } from "react-router-dom";
 const Login = () => {
-  const { register, handleSubmit, reset } = useForm()
+  const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   const [msg, setMsg] = useState(null);
   // useEffect(()=>{
@@ -17,17 +17,24 @@ const Login = () => {
   // }, [])
 
   const onSubmit = (data) => {
-    axios.post('/api/v1/users/login', data)
+    axios
+      .post("/api/v1/users/login", data, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
-        if(res.data.status == 200){
-          navigate('/users/tasks')
+        console.log(res)
+        if (res.data.status == 200) {
+          navigate("/users/tasks");
         }
       })
       .catch((error) => {
-        console.log(error)
-        setMsg(error.response?.data.error || "server unreacheable")
-      })
-  }
+        console.log(error);
+        setMsg(error.response?.data.error || "server unreacheable");
+      });
+  };
 
   return (
     <div className="w-full justify-center text-xl my-5 text-black">
@@ -51,11 +58,20 @@ const Login = () => {
           className="w-60 bg-green-500 text-white rounded-sm cursor-pointer p-2 m-2  active:bg-fuchsia-700 font-bold"
           type="submit"
         />
-        <h1 className='text-sm text-white'>Don't have an account? <NavLink to='/users/register' className="text-fuchsia-400 hover:text-fuchsia-700">Register</NavLink> now</h1>
+        <h1 className="text-sm text-white">
+          Don't have an account?{" "}
+          <NavLink
+            to="/users/register"
+            className="text-fuchsia-400 hover:text-fuchsia-700"
+          >
+            Register
+          </NavLink>{" "}
+          now
+        </h1>
       </form>
       <div className="text-center text-white">{msg}</div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

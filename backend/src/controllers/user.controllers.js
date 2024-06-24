@@ -115,4 +115,13 @@ const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie("accessToken", options)
     .json(new ApiResponse(200, {}, `${username} logged out successfully`));
 });
-export { registerUser, loginUser, logoutUser };
+
+const checkLogin = asyncHandler(async (req, res) => {
+  console.log("reached here")
+  try {
+    res.status(200).json(new ApiResponse(200,req.user,"User already logged in"))
+  } catch (error) {
+    return res.status(200).json(new ApiResponse(404,{isLoggedIn: false},"User not logged in "))
+  }
+})
+export { registerUser, loginUser, logoutUser, checkLogin };

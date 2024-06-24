@@ -9,7 +9,12 @@ const Tasks = () => {
   const [data, setData] = useState([]);
   const fetchData = () => {
     axios
-      .post("/api/v1/users/tasks")
+      .post("/api/v1/users/tasks", {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         setData(res.data.data);
       })
@@ -31,7 +36,12 @@ const Tasks = () => {
   const onSubmit = (data) => {
     console.log(data);
     axios
-      .post("/api/v1/users/add-task", data)
+      .post("/api/v1/users/add-task", data, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         console.log("res ---> ", res);
         fetchData();
@@ -44,7 +54,12 @@ const Tasks = () => {
 
   const handleDelete = (id) => {
     axios
-      .get(`/api/v1/users/delete-tasks/${id}`)
+      .get(`/api/v1/users/delete-tasks/${id}`, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((res) => {
         console.log(res);
         fetchData();
@@ -124,7 +139,9 @@ const Tasks = () => {
 
       <div className="flex flex-wrap sm:justify-center xl:justify-start">
         {data.map((task) => {
-          return <TaskCard key={task._id} data={task} onDelete={handleDelete}/>;
+          return (
+            <TaskCard key={task._id} data={task} onDelete={handleDelete} />
+          );
         })}
       </div>
     </div>

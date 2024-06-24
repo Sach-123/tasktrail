@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from 'axios'
+import axios from "axios";
 
 const Register = () => {
   const { register, handleSubmit, reset } = useForm();
-  const [response, setResponse] = useState({})
+  const [response, setResponse] = useState({});
   const [msg, setMsg] = useState();
   const onSubmit = (data) => {
     reset();
-    axios.post('/api/v1/users/register', data).then((res)=> {
-      setResponse(res)
-      setMsg(res.data.message + ". Login to continue")
-    }).catch((error) => {
-      setMsg(error.response?.data.error || "server unreachable")
-    })
-    
+    axios
+      .post("/api/v1/users/register", data, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((res) => {
+        setResponse(res);
+        setMsg(res.data.message + ". Login to continue");
+      })
+      .catch((error) => {
+        setMsg(error.response?.data.error || "server unreachable");
+      });
   };
 
   return (
